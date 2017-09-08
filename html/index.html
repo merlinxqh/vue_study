@@ -68,6 +68,23 @@
     </p>
     <p>{{answer}}</p>
 </div>
+
+<!--样式绑定-->
+<div id="bindCss" class="static"
+     v-bind:class="{ active: isActive, 'text-danger': hasError }">
+    样式绑定...
+</div>
+<div id="cssObject" v-bind:class="classObject">
+    样式绑定对象...
+</div>
+<div id="computedCssObj" v-bind:class="classObject">
+    样式绑定计算属性...
+</div>
+
+<div id="arrayCss" v-bind:class="[activeClass, errorClass]">
+    样式 数组...
+    <div v-bind:class="[{ active: isActive }, errorClass]">aaaaa</div>
+</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
@@ -222,6 +239,51 @@
                 //这是我们为用户停止输入等待的毫秒数..
                 500
             )
+        }
+    });
+
+
+    //样式绑定
+    var bindCss=new Vue({
+        el: "#bindCss",
+        data: {
+            isActive: true,
+            hasError: false
+        }
+    });
+
+    var cssObject=new Vue({
+        el: "#cssObject",
+        data: {
+            classObject: {
+                active: true,
+                'text-danger': false
+            }
+        }
+    });
+
+    var computedCssObj=new Vue({
+        el: "#computedCssObj",
+        data: {
+            isActive: true,
+            error: null
+        },
+        computed: {
+            classObject: function(){
+                return {
+                    active: this.isActive && !this.error,
+                    'text-danger': this.error && this.error.type === 'fatal'
+                }
+            }
+        }
+    });
+
+    var arrayCss=new Vue({
+        el: "#arrayCss",
+        data: {
+            activeClass: 'active',
+            errorClass: 'text-danger',
+            isActive: false
         }
     });
 </script>
